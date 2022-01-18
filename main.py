@@ -1,5 +1,4 @@
 import os
-from dotenv import load_dotenv
 from flask import Flask, render_template, redirect, url_for, flash, abort
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
@@ -14,15 +13,12 @@ from functools import wraps
 
 app = Flask(__name__)
 
-load_dotenv()
-FLASK_KEY = os.getenv("FLASK_KEY")
-
-app.config['SECRET_KEY'] = FLASK_KEY
+app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
 ckeditor = CKEditor(app)
 Bootstrap(app)
 
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///blog.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
